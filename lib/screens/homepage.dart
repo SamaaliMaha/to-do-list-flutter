@@ -34,12 +34,11 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }*/
-  callApi() {
-    ApiTask.getAllTasks().then((value) {
-      setState(() {
-        listTasks = value;
-        isInAsyncCall = false;
-      });
+  callApi() async {
+    var value = await ApiTask.getAllTasks();
+    setState(() {
+      listTasks = value;
+      isInAsyncCall = false;
     });
   }
 
@@ -73,18 +72,19 @@ class _HomePageState extends State<HomePage> {
                         caption: 'delete',
                         color: Colors.red,
                         icon: Icons.delete,
-                        onTap: () {
+                        onTap: () async {
                           setState(() {
                             isInAsyncCall = true;
                           });
-                          ApiTask.deleteTaskbyId(listTasks[index].id)
-                              .then((value) {
-                            setState(() {
-                              listTasks.removeAt(index);
-                              isInAsyncCall = false;
-                            });
-                            _ShowSnackBar(context, 'Task Deleted');
+
+                          var value =
+                              await ApiTask.deleteTaskbyId(listTasks[index].id);
+
+                          setState(() {
+                            listTasks.removeAt(index);
+                            isInAsyncCall = false;
                           });
+                          _ShowSnackBar(context, 'Task Deleted');
                         },
                       ),
                     ],

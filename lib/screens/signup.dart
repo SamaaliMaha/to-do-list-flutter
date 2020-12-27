@@ -96,31 +96,34 @@ class _signupState extends State<signup> {
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
                   child: appbutton(
                       textContent: 'sign up ',
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() {
                           isInAsyncCall = true;
                         });
+
                         var body = {
                           "name": nameController.text.toString(),
                           "email": emailController.text.toString(),
                           "password": passwordController.text.toString(),
                           "age": 20
                         };
-                        ApiAuth.register(body).then((response) {
-                          setState(() {
-                            isInAsyncCall = false;
-                          });
 
-                          if (response.statusCode == 201) {
-                            Navigator.pushNamed(context, '/home');
-                          } else {
-                            showMyDialog(
-                                context, 'error', response.body.toString(), () {
-                              Navigator.pop(context);
-                            });
-                            print(response.body);
-                          }
+                        //begin async function
+                        var response = await ApiAuth.register(body);
+
+                        setState(() {
+                          isInAsyncCall = false;
                         });
+
+                        if (response.statusCode == 201) {
+                          Navigator.pushNamed(context, '/home');
+                        } else {
+                          showMyDialog(
+                              context, 'error', response.body.toString(), () {
+                            Navigator.pop(context);
+                          });
+                          print(response.body);
+                        }
                       }),
                 ),
                 SizedBox(height: 30),

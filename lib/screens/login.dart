@@ -120,11 +120,10 @@ class _loginpageState extends State<loginpage> {
 
                             Navigator.pushNamed(context, '/home');
                           } else {
-                            showMyDialog(
-                                context, 'error', response.body.toString(), () {
+                            var message = json.decode(response.body)['msg'];
+                            showMyDialog(context, 'error', message, () {
                               Navigator.pop(context);
                             });
-                            print(response.body);
                           }
                         });
                       }),

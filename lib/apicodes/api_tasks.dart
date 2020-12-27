@@ -16,7 +16,8 @@ class ApiTask {
       });
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        for (Map i in data['data']) {
+
+        for (Map i in data) {
           listTasks.add(Task.fromJson(i));
         }
       }
